@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/users", usersRouter)
+app.use(usersRouter)
 
 
 app.listen(3333, () => console.log(`🚀 back fideliza listening on port 3333.`))

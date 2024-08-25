@@ -7,5 +7,5 @@ export interface UserCreate {
     sexo: string
     active: boolean
     role: string
-    storeId: number 
+    storeId?: number | null
 }

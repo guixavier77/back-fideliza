@@ -1,8 +1,9 @@
 import { Request,Response } from "express";
+import UsersService from "../services/users.service";
 
 export default class UsersController {
-    public get(req: Request, res: Response): void {
-        res.status(200).json({ message: 'HELLO, WORLD' });
-
+    private usersService = new UsersService();
+    public getAll(req: Request, res: Response): Promise<any> {
+        return this.usersService.getAll();
     }
 }
