@@ -1,1 +1,0 @@
-export {validateUsers} from './users-validator';

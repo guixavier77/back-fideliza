@@ -4,8 +4,9 @@ export interface UserCreate {
     email: string
     name: string
     phone: string
-    sexo: string
+    sex: string
     active: boolean
     role: string
-    storeId?: number | null
+    password: string
+    storeId: number | null
 }
