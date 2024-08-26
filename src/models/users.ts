@@ -5,6 +5,7 @@ export interface UserCreate {
     name: string
     phone: string
     sex: string
+    birthDate: string
     active: boolean
     role: string
     password: string

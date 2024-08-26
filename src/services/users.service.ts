@@ -24,12 +24,14 @@ class UsersService {
             else throw new Error('E-mail already exists');
         }
         const password = await generatePassword(userCreate.password);
-        await UsersDB.create({
+        const user = await UsersDB.create({
             data: {
                 ...userCreate,
                 password,
             }
         })
+
+        return user;
     }
 
     async getAll(): Promise<any> { 

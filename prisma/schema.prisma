@@ -30,14 +30,15 @@ model users {
     name       String    @db.VarChar(255)
     phone      String    @db.VarChar(255)
     sex        String    @default("m")
+    birthDate  String    @db.VarChar(255) @default("00/00/0000")
     active     Boolean
     role       String
-    storeId    Int
+    storeId    Int?
     password   String    @db.VarChar(255)
-    stores     stores    @relation(fields: [storeId], references: [id], onDelete: Cascade)
     created_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
+    stores     stores?    @relation(fields: [storeId], references: [id], onDelete: Cascade)
     rewards                rewards[]
     users_history          users_history[]
     promotions_users_point promotions_users_point[]
