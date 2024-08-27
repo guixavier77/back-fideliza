@@ -11,3 +11,8 @@ export interface UserCreate {
     password: string
     storeId: number | null
 }
+
+export interface UserAuth {
+    email: string
+    password: string
+}

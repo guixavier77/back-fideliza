@@ -23,7 +23,19 @@ export default class UsersController {
             const users = await this.usersService.getAll();
             res.status(200).send({ msg: 'DEU BÃO', users });
         } catch (error) {
-            res.status(500).send({ msg: 'Erro ao buscar usuários', error });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+
+        }
+    }
+
+
+    async auth(req: Request, res: Response): Promise<void> {
+        try{
+            const token = await this.usersService.auth(req.body);
+            res.status(200).send({msg: 'Login success', token})
+        }catch (error) {
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+
         }
     }
 }
