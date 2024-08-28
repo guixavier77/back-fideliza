@@ -79,7 +79,7 @@ class UsersService {
             expiresIn: '48h'
         })
 
-        return token;
+        return {token, user: payload};
     }
 
 }

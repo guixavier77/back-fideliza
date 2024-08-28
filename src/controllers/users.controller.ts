@@ -31,8 +31,8 @@ export default class UsersController {
 
     async auth(req: Request, res: Response): Promise<void> {
         try{
-            const token = await this.usersService.auth(req.body);
-            res.status(200).send({msg: 'Login success', token})
+            const {user, token} = await this.usersService.auth(req.body);
+            res.status(200).send({msg: 'Login success', user, token}) 
         }catch (error) {
             res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
 

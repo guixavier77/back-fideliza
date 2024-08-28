@@ -19,8 +19,6 @@ class SendEmailService {
     }
 
     async confirmRegister(email: string): Promise<any> { 
-        
-        
         const mailOptions = {
             from: `Confirmação de Registro <>`,
             to: [email],
