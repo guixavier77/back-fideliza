@@ -17,7 +17,6 @@ export default class UsersController {
         }
     }
 
-
     async getAll(req: Request, res: Response): Promise<void> {
         try {
             const users = await this.usersService.getAll();
@@ -27,7 +26,6 @@ export default class UsersController {
 
         }
     }
-
 
     async auth(req: Request, res: Response): Promise<void> {
         try{

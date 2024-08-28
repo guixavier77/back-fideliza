@@ -22,4 +22,14 @@ export default class StoresController {
             res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
         }
     }
+
+    async getOne(req: Request, res: Response): Promise<void> {
+        const {storeId} = req.params;
+        try {
+            const store = await this.storesService.getOne(parseInt(storeId));
+            res.status(200).send({  store });
+        } catch (error) {
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+        }
+    }
 }

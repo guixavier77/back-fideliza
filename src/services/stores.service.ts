@@ -22,6 +22,12 @@ class StoresService {
         return stores;
     }
 
+    async getOne(storeId: number): Promise<any> { 
+        const {stores: StoresDB} = prisma;
+        const store = await StoresDB.findFirst({where: {id: storeId}})
+        return store;
+    }
+
 }
 
 export default StoresService;
