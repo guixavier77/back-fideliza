@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+
+interface AuthenticatedRequest extends Request {
+    user?: any; 
+}
 export function validateAuth(requiredRole?: string[]) {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 			const authHeader = req.headers.authorization;
 			const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : undefined;
 			if (!token) {
@@ -13,6 +17,7 @@ export function validateAuth(requiredRole?: string[]) {
 					if (requiredRole && !requiredRole.includes(decoded.role)) {
 							return res.status(403).send({ msg: 'Access denied' });
 					}
+					req.user = decoded;
 					next();
 			} catch (error) {
 					console.log(error);
