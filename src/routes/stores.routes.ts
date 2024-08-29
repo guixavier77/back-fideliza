@@ -9,9 +9,9 @@ const storesRouter = Router();
 const storesController = new StoresController();
 
 
-storesRouter.post('/stores', validateAuth([ROLE.SUPERADMIN]),(req: Request, res: Response) => storesController.create(req, res));
-storesRouter.get('/stores', validateAuth([ROLE.SUPERADMIN]),(req: Request, res: Response) => storesController.getAll(req, res));
-storesRouter.get('/stores/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]),(req: Request, res: Response) => storesController.getOne(req, res));
+storesRouter.post('/stores', validateAuth([ROLE.SUPERADMIN]),storesController.create);
+storesRouter.get('/stores', validateAuth([ROLE.SUPERADMIN]),storesController.getAll);
+storesRouter.get('/stores/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]),storesController.getOne);
 
 
 

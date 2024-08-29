@@ -1,18 +1,14 @@
-import {Router, Response, Request} from 'express';
-import UsersController from '../controllers/users.controller';
-import StoresController from '../controllers/stores.controller';
-import { validateAuth } from '../middlewares/auth';
+import { Router } from 'express';
 import { ROLE } from '../../utils/roles';
 import AwardsController from '../controllers/awards.controller';
+import { validateAuth } from '../middlewares/auth';
 
 const awardsRouter = Router();
 
 const awardsController = new AwardsController();
 
-
-awardsRouter.post('/awards', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]),(req: Request, res: Response) => awardsController.create(req, res));
-awardsRouter.get('/awards', validateAuth([ROLE.SUPERADMIN]),(req: Request, res: Response) => awardsController.getAll(req, res));
-awardsRouter.get('/awards/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]),(req: Request, res: Response) => awardsController.getAllByStore(req, res));
+awardsRouter.post('/awards', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]), awardsController.create);
+awardsRouter.get('/awards/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]), awardsController.getAllByStore);
 
 
 
