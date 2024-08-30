@@ -9,7 +9,7 @@ export function validateStore(store: StoreCreate) {
         name: Joi.string().required(),
         phone: Joi.string().required().min(10).max(15),
         cnpj: Joi.string().required().min(14).max(14),
-        active: Joi.boolean().required(),
+        active: Joi.boolean().optional().default(true),
         address_cep: Joi.string().required(),
         address_uf: Joi.string().required(),
         address_city: Joi.string().required(),
