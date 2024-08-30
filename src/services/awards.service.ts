@@ -11,6 +11,7 @@ class AwardsService {
 
     async create(awardCreate: AwardCreate): Promise<any> { 
         const validate = validateAward(awardCreate)
+        console.log(validate);
         if(validate.error) throw new Error(validate.error.details[0].message);
         const {awards: AwardDB} = prisma;
         await AwardDB.create({data: {...awardCreate}})

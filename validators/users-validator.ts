@@ -13,7 +13,7 @@ export function validateUser(user: UserCreate) {
         sex: Joi.string().required().valid("m", "f", "i"),
         active: Joi.boolean().required(),
         role: Joi.string().required().valid("superAdmin","admin", "customer", "operator"),
-        storeId: Joi.number().optional().allow("", null)
+        storeId: Joi.number().optional()
     })
 
     
