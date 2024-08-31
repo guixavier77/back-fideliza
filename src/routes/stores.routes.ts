@@ -10,6 +10,7 @@ const storesController = new StoresController();
 
 
 storesRouter.post('/stores', validateAuth([ROLE.SUPERADMIN]),storesController.create);
+storesRouter.put('/stores', validateAuth([ROLE.SUPERADMIN]),storesController.update);
 storesRouter.get('/stores', validateAuth([ROLE.SUPERADMIN]),storesController.getAll);
 storesRouter.get('/stores/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]),storesController.getOne);
 

@@ -1,4 +1,3 @@
-
 export interface UserCreate {
     cpf: string
     email: string
@@ -11,6 +10,11 @@ export interface UserCreate {
     password: string
     storeId: number | null
 }
+
+export interface UserUpdate extends UserCreate {
+    id: number;
+}
+
 
 export interface UserAuth {
     email: string

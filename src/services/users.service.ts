@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { validateUser } from "../../validators/users-validator";
-import { UserAuth, UserCreate } from "../models/users";
+import { validateUser, validateUserUpdate } from "../../validators/users-validator";
+import { UserAuth, UserCreate, UserUpdate } from "../models/users";
 import {  comparePassword, generatePassword } from "../../utils/password";
 import jwt from 'jsonwebtoken'
 
@@ -50,10 +50,37 @@ class UsersService {
                 storeId: true,
                 created_at: true,
                 updated_at: true,
+                birthDate: true,
                 password: false,
             }
         })
         return users;
+    }
+
+    async update(userUpdate: UserUpdate): Promise<any> { 
+        const {users: UsersDB} = this.prisma;
+        console.log(userUpdate);
+        const validate = validateUserUpdate(userUpdate)
+        if(validate.error) throw new Error(validate.error.details[0].message);
+
+        const userExists = await UsersDB.findFirst({
+            where: {
+                OR: [
+                    {cpf: userUpdate.cpf},
+                    {email: userUpdate.email}
+                ]
+            }
+        })
+
+        if(userExists && userExists.id !== userUpdate.id){
+            if(userExists.cpf === userUpdate.cpf) throw new Error('CPF already exists');
+            else throw new Error('E-mail already exists');
+        }
+        const user = await UsersDB.update({
+            where: {id: userUpdate.id},
+            data: {...userUpdate}
+        })
+        return user;
     }
 
     async auth(userAuth: UserAuth): Promise<any>{

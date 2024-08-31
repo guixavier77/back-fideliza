@@ -21,3 +21,4 @@ export function validateStore(store: StoreCreate) {
     
 	return JoiSchema.validate(store)
 }
+

@@ -14,3 +14,7 @@ export interface StoreCreate {
     address_street: string 
     address_number: string 
 }
+
+export interface StoreUpdate extends StoreCreate {
+    id: number;
+}

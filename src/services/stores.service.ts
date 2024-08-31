@@ -1,6 +1,6 @@
 
 import { validateStore} from "../../validators/stores-validator";
-import { StoreCreate } from "../models/stores";
+import { StoreCreate, StoreUpdate } from "../models/stores";
 import { PrismaClient } from "@prisma/client";
 
 
@@ -16,11 +16,23 @@ class StoresService {
         await StoresDB.create({data: {...storeCreate}})
     }
 
+    async update(storeUpdate: StoreUpdate): Promise<any> { 
+        const {stores: StoresDB} = prisma;
+        const store = await StoresDB.update({
+            where: {id: storeUpdate.id},
+            data: {...storeUpdate}
+        })
+        return store;
+    }
+
+
     async getAll(): Promise<any> { 
         const {stores: StoresDB} = prisma;
         const stores = await StoresDB.findMany()
         return stores;
     }
+
+
 
     async getOne(storeId: number): Promise<any> { 
         const {stores: StoresDB} = prisma;

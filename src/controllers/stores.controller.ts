@@ -32,4 +32,13 @@ export default class StoresController {
             res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
         }
     }
+
+    async update(req: Request, res: Response): Promise<void> {
+        try {
+            const store = await storesService.update(req.body);
+            res.status(200).send({ msg: 'Store updated sucessfull', store });
+        } catch (error) {
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+        }
+    }
 }
