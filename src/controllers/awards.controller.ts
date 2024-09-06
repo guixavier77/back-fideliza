@@ -6,10 +6,18 @@ const awardsService = new AwardsService();
 export default class AwardsController {
 
     async create(req: Request, res: Response): Promise<void> {
-      
         try {
             const award = await awardsService.create(req.body);
             res.status(200).send({ msg: 'Award created sucessfull', award });
+        } catch (error) {
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+        }
+    }
+
+    async update(req: Request, res: Response): Promise<void> {
+        try {
+            const award = await awardsService.update(req.body);
+            res.status(200).send({ msg: 'Award updated sucessfull', award });
         } catch (error) {
             res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
         }

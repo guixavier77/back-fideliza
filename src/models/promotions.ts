@@ -4,4 +4,9 @@ export interface PromotionCreate {
   points: number;
   active: boolean;  
   storeId: number;
+  maxWinners: number;
+}
+
+export interface PromotionUpdate  extends PromotionCreate {
+  id: number,
 }

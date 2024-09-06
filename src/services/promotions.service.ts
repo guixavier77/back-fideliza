@@ -1,8 +1,7 @@
 
 import { PrismaClient } from "@prisma/client";
-import multer from 'multer';
-import { validatePromotion } from "../../validators/promotions-validator";
-import { PromotionCreate } from "../models/promotions";
+import { validatePromotion, validateUpdatePromotion } from "../../validators/promotions-validator";
+import { PromotionCreate, PromotionUpdate } from "../models/promotions";
 
 
 const prisma = new PrismaClient();
@@ -14,6 +13,16 @@ class PromotionsService {
         if(validate.error) throw new Error(validate.error.details[0].message);
         const {promotions: PromotionDB} = prisma;
         await PromotionDB.create({data: {...promotionCreate}})
+    }
+
+    async update(promotionUpdate: PromotionUpdate): Promise<any> { 
+        const validate = validateUpdatePromotion(promotionUpdate)
+        if(validate.error) throw new Error(validate.error.details[0].message);
+        const {promotions: PromotionDB} = prisma;
+        await PromotionDB.update({ 
+            where:{id: promotionUpdate.id}, 
+            data: {...promotionUpdate}}
+        )
     }
 
     async getAllByStore(storeId: number): Promise<any> { 

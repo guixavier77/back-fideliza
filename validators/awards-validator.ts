@@ -11,3 +11,16 @@ export function validateAward(award: AwardCreate) {
 	})
 	return JoiSchema.validate(award)
 }
+
+
+export function validateUpdateAward(award: AwardCreate) {
+	const JoiSchema = Joi.object({
+		id: Joi.number().required(),
+		name: Joi.string().required(),
+		price: Joi.number().required(),
+		active: Joi.boolean().optional(),
+		image_url: Joi.string().optional().allow(""),
+		storeId: Joi.number().required()
+	})
+	return JoiSchema.validate(award)
+}

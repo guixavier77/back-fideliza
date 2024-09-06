@@ -8,19 +8,19 @@ datasource db {
 }
 
 model stores {
-    id                   Int       @id @default(autoincrement())
-    cnpj                 String    @unique @db.VarChar(255)
-    name                 String    @db.VarChar(255)
-    phone                String    @db.VarChar(255)
-    active               Boolean   @default(true)
-    email                String    @db.VarChar(255)
-    
-    address_cep          String    @db.VarChar(255) @default("")
-    address_uf           String    @db.VarChar(255) @default("")
-    address_city         String    @db.VarChar(255) @default("")
-    address_neighborhood String    @db.VarChar(255) @default("")
-    address_street       String    @db.VarChar(255) @default("")
-    address_number       String?   @db.VarChar(255) @default("")
+    id     Int     @id @default(autoincrement())
+    cnpj   String  @unique @db.VarChar(255)
+    name   String  @db.VarChar(255)
+    phone  String  @db.VarChar(255)
+    active Boolean @default(true)
+    email  String  @db.VarChar(255)
+
+    address_cep          String    @default("") @db.VarChar(255)
+    address_uf           String    @default("") @db.VarChar(255)
+    address_city         String    @default("") @db.VarChar(255)
+    address_neighborhood String    @default("") @db.VarChar(255)
+    address_street       String    @default("") @db.VarChar(255)
+    address_number       String?   @default("") @db.VarChar(255)
     created_at           DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at           DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
@@ -92,6 +92,7 @@ model promotions {
     storeId                Int
     name                   String                   @db.VarChar(255)
     points                 Int
+    maxWinners             Int                      @default(0)
     active                 Boolean                  @default(true)
     created_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)

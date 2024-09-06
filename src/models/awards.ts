@@ -4,4 +4,8 @@ export interface AwardCreate {
   price: number,
   active: boolean,
   image_url: string,
-  }
+}
+
+export interface AwardUpdate extends AwardCreate {
+  id: number;
+}

@@ -8,6 +8,7 @@ const awardsRouter = Router();
 const awardsController = new AwardsController();
 
 awardsRouter.post('/awards', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]), awardsController.create);
+awardsRouter.put('/awards', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]), awardsController.update);
 awardsRouter.get('/awards/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]), awardsController.getAllByStore);
 
 

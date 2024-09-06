@@ -1,7 +1,7 @@
 
 import { PrismaClient } from "@prisma/client";
-import { validateAward } from "../../validators/awards-validator";
-import { AwardCreate } from "../models/awards";
+import { validateAward, validateUpdateAward } from "../../validators/awards-validator";
+import { AwardCreate, AwardUpdate } from "../models/awards";
 import multer from 'multer'
 
 
@@ -11,10 +11,17 @@ class AwardsService {
 
     async create(awardCreate: AwardCreate): Promise<any> { 
         const validate = validateAward(awardCreate)
-        console.log(validate);
         if(validate.error) throw new Error(validate.error.details[0].message);
         const {awards: AwardDB} = prisma;
         await AwardDB.create({data: {...awardCreate}})
+
+    }
+
+    async update(awardUpdate: AwardUpdate): Promise<any> { 
+        const validate = validateUpdateAward(awardUpdate)
+        if(validate.error) throw new Error(validate.error.details[0].message);
+        const {awards: AwardDB} = prisma;
+        await AwardDB.update({ where: {id: awardUpdate.id}, data: {...awardUpdate}})
     }
 
     async getAllByStore(storeId: number): Promise<any> { 
