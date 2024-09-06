@@ -49,6 +49,7 @@ model users {
     rewards                rewards[]
     users_history          users_history[]
     promotions_users_point promotions_users_point[]
+    promotion_winners      promotion_winners[]
 }
 
 model users_history {
@@ -93,12 +94,25 @@ model promotions {
     name                   String                   @db.VarChar(255)
     points                 Int
     maxWinners             Int                      @default(0)
+    currentWinners         Int                      @default(0)
     active                 Boolean                  @default(true)
     created_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     stores                 stores                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
     awards                 awards                   @relation(fields: [awardId], references: [id], onDelete: Cascade)
     promotions_users_point promotions_users_point[]
+    promotion_winners      promotion_winners[]
+}
+
+model promotion_winners {
+    id          Int        @id @default(autoincrement())
+    promotionId Int
+    userId      Int
+    created_at  DateTime   @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    promotions  promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+    users       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([promotionId, userId])
 }
 
 model promotions_users_point {
