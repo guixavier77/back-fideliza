@@ -36,6 +36,16 @@ export default class UsersController {
         }
     }
 
+    async refreshToken(req: Request, res: Response): Promise<void> {
+        try{
+            const token = await usersService.refreshToken(req.body.token);
+            res.status(200).send({msg: 'New token generated', token}) 
+        }catch (error) {
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+
+        }
+    }
+
     async auth(req: Request, res: Response): Promise<void> {
         try{
             const {user, token} = await usersService.auth(req.body);

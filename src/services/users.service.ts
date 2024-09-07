@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { validateUser, validateUserUpdate } from "../../validators/users-validator";
 import { UserAuth, UserCreate, UserUpdate } from "../models/users";
 import {  comparePassword, generatePassword } from "../../utils/password";
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 
 class UsersService {
     private prisma = new PrismaClient();
@@ -107,6 +107,42 @@ class UsersService {
         })
 
         return {token, user: payload};
+    }
+
+    async refreshToken(token: string): Promise<any> {
+        const { users: UsersDB } = this.prisma;
+        try {
+            const decoded = jwt.decode(token, { complete: true });
+            const userId = (decoded as any)?.payload?.id;
+
+
+            const user = await UsersDB.findUnique({
+                where: { id: userId }
+            });
+
+            if (!user) {
+                throw new Error('Invalid user');
+            }
+
+
+            const newPayload = {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+                storeId: user.storeId,
+                active: user.active
+            };
+
+            const refreshToken = jwt.sign(newPayload, process.env.JWT_SECRET, {
+                expiresIn: '30d'
+            });
+
+            return refreshToken;
+
+        } catch (error) {
+            throw new Error('Invalid refresh token');
+        }
     }
 
 }
