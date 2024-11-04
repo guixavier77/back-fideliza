@@ -10,7 +10,7 @@ export default class StoresController {
             const store = await storesService.create(req.body);
             res.status(200).send({ msg: 'Store created sucessfull', store });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 
@@ -19,7 +19,7 @@ export default class StoresController {
             const stores = await storesService.getAll();
             res.status(200).send({  stores });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 
@@ -29,7 +29,7 @@ export default class StoresController {
             const store = await storesService.getOne(parseInt(storeId));
             res.status(200).send({  store });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 
@@ -38,7 +38,7 @@ export default class StoresController {
             const store = await storesService.update(req.body);
             res.status(200).send({ msg: 'Store updated sucessfull', store });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 }

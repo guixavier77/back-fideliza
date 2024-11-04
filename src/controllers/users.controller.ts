@@ -13,7 +13,7 @@ export default class UsersController {
             await sendEmailService.confirmRegister(user.email)
             res.status(200).send({ msg: 'User created successfull', user });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 
@@ -22,7 +22,7 @@ export default class UsersController {
             const user = await usersService.update(req.body);
             res.status(200).send({ msg: 'User updated successfull', user });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
         }
     }
 
@@ -31,7 +31,7 @@ export default class UsersController {
             const users = await usersService.getAll();
             res.status(200).send({ msg: 'Get users successfull', users });
         } catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
 
         }
     }
@@ -41,7 +41,7 @@ export default class UsersController {
             const token = await usersService.refreshToken(req.body.token);
             res.status(200).send({msg: 'New token generated', token}) 
         }catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
 
         }
     }
@@ -51,7 +51,7 @@ export default class UsersController {
             const {user, token} = await usersService.auth(req.body);
             res.status(200).send({msg: 'Login success', user, token}) 
         }catch (error) {
-            res.status(500).send({msg: error instanceof Error ? error.message : 'Erro desconhecido' });
+            res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });
 
         }
     }

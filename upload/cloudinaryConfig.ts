@@ -7,13 +7,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
-const storageAwards = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => ({
-    folder: 'awards',
-    format: 'png', // ou o formato que você preferir
-    public_id: file.originalname.split('.')[0],
-  }),
-});
+const createStorage = (folderName: string) => {
+    return new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: async (req, file) => ({
+            folder: folderName,
+            format: 'png',
+            public_id: file.originalname.split('.')[0],
+        }),
+    });
+};
 
-export default storageAwards;
+export { createStorage, cloudinary };

@@ -6,7 +6,7 @@ export function validateAward(award: AwardCreate) {
 		name: Joi.string().required(),
 		price: Joi.number().required(),
 		active: Joi.boolean().optional(),
-		image_url: Joi.string().optional().allow(""),
+		image: Joi.string().optional().allow(""),
 		storeId: Joi.number().required()
 	})
 	return JoiSchema.validate(award)
@@ -19,7 +19,7 @@ export function validateUpdateAward(award: AwardCreate) {
 		name: Joi.string().required(),
 		price: Joi.number().required(),
 		active: Joi.boolean().optional(),
-		image_url: Joi.string().optional().allow(""),
+		image: Joi.string().optional().allow(""),
 		storeId: Joi.number().required()
 	})
 	return JoiSchema.validate(award)
