@@ -9,7 +9,7 @@ const promotionsController = new PromotionsController();
 
 promotionsRouter.post('/promotions', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]), promotionsController.create);
 promotionsRouter.put('/promotions', validateAuth([ROLE.SUPERADMIN, ROLE.ADMIN]), promotionsController.update);
-promotionsRouter.get('/promotions/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN]), promotionsController.getAllByStore);
+promotionsRouter.get('/promotions/:storeId', validateAuth([ROLE.SUPERADMIN,ROLE.ADMIN, ROLE.OPERATOR]), promotionsController.getAllByStore);
 
 
 

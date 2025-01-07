@@ -7,6 +7,7 @@ export function validatePromotion(promotion: PromotionCreate) {
 		awardId: Joi.number().required(),
 		active: Joi.boolean().optional(),
 		points: Joi.number().required(),
+		pointsPerPurchase: Joi.number().required(),
 		storeId: Joi.number().required(),
 		maxWinners: Joi.number().required()
 	})
@@ -20,6 +21,7 @@ export function validateUpdatePromotion(promotion: PromotionCreate) {
 		awardId: Joi.number().required(),
 		active: Joi.boolean().optional(),
 		points: Joi.number().required(),
+		pointsPerPurchase: Joi.number().required(),
 		storeId: Joi.number().required()
 	})
 	return JoiSchema.validate(promotion)

@@ -45,11 +45,12 @@ model users {
     created_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
-    stores                 stores?                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    rewards                rewards[]
-    users_history          users_history[]
-    promotions_users_point promotions_users_point[]
-    promotion_winners      promotion_winners[]
+    stores                   stores?                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    rewards                  rewards[]
+    users_history            users_history[]
+    promotions_users_point   promotions_users_point[]
+    promotions_users_history promotions_users_history[]
+    promotion_winners        promotion_winners[]
 }
 
 model users_history {
@@ -69,7 +70,7 @@ model awards {
     name       String       @db.VarChar(255)
     price      Float
     active     Boolean      @default(true)
-    image      String?      @db.Text 
+    image      String?      @db.Text
     created_at DateTime?    @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at DateTime?    @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     stores     stores       @relation(fields: [storeId], references: [id], onDelete: Cascade)
@@ -88,20 +89,22 @@ model rewards {
 }
 
 model promotions {
-    id                     Int                      @id @default(autoincrement())
-    awardId                Int
-    storeId                Int
-    name                   String                   @db.VarChar(255)
-    points                 Int
-    maxWinners             Int                      @default(0)
-    currentWinners         Int                      @default(0)
-    active                 Boolean                  @default(true)
-    created_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
-    updated_at             DateTime?                @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
-    stores                 stores                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    awards                 awards                   @relation(fields: [awardId], references: [id], onDelete: Cascade)
-    promotions_users_point promotions_users_point[]
-    promotion_winners      promotion_winners[]
+    id                       Int                        @id @default(autoincrement())
+    awardId                  Int
+    storeId                  Int
+    name                     String                     @db.VarChar(255)
+    points                   Int
+    pointsPerPurchase        Int                        @default(0)
+    maxWinners               Int                        @default(0)
+    currentWinners           Int                        @default(0)
+    active                   Boolean                    @default(true)
+    created_at               DateTime?                  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    updated_at               DateTime?                  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    stores                   stores                     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    awards                   awards                     @relation(fields: [awardId], references: [id], onDelete: Cascade)
+    promotions_users_point   promotions_users_point[]
+    promotion_winners        promotion_winners[]
+    promotions_users_history promotions_users_history[]
 }
 
 model promotion_winners {
@@ -124,4 +127,23 @@ model promotions_users_point {
     created_at  DateTime?  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     users       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
     promotions  promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, promotionId])
+}
+
+model promotions_users_history {
+    id          Int        @id @default(autoincrement())
+    userId      Int
+    operatorId  Int
+    promotionId Int
+    created_at  DateTime?  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    users       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    promotions  promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+}
+
+model qr_code {
+    id          Int     @id @default(autoincrement())
+    promotionId Int
+    userId      Int?
+    read        Boolean @default(false)
 }

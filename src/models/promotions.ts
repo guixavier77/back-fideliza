@@ -5,6 +5,7 @@ export interface PromotionCreate {
   active: boolean;  
   storeId: number;
   maxWinners: number;
+  pointsPerPurchase: number
 }
 
 export interface PromotionUpdate  extends PromotionCreate {
