@@ -6,6 +6,8 @@ import awardsRouter from './routes/awards.routes';
 import promotionsRouter from './routes/promotions.routes';
 import launcherPointsRouter from './routes/launcherPoints.routes';
 const app = express();
+const host = process.env.HOST || 'localhost';
+const port = process.env.NODE_PORT || '3333'
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 app.use(usersRouter)
@@ -14,4 +16,4 @@ app.use(awardsRouter)
 app.use(promotionsRouter)
 app.use(launcherPointsRouter)
 
-app.listen(3333, () => console.log(`🚀 back fideliza listening on port 3333.`))
+app.listen(parseInt(port), host, () => console.log(`🚀 back fideliza listening on port 80.`))

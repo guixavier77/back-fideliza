@@ -5,4 +5,4 @@ DISPLAY_NAME=back-fideliza
 DESCRIPTION=Back
 AUTORESTART=true
 SUBDOMAIN=backfideliza
-START=yarn production
+START=npm run production
