@@ -98,7 +98,8 @@ class UsersService {
             name: userExists.name,
             role: userExists.role,
             storeId: userExists.storeId,
-            active: userExists.active
+            active: userExists.active,
+            cpf: userExists.cpf
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET,{
@@ -130,7 +131,8 @@ class UsersService {
                 name: user.name,
                 role: user.role,
                 storeId: user.storeId,
-                active: user.active
+                active: user.active,
+                cpf: user.cpf
             };
 
             const refreshToken = jwt.sign(newPayload, process.env.JWT_SECRET, {

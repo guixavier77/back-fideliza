@@ -17,6 +17,7 @@ export function validateAuth(requiredRole?: string[]) {
 					if (requiredRole && !requiredRole.includes(decoded.role)) {
 							return res.status(403).send({ msg: 'Access denied' });
 					}
+					console.log(decoded);
 					req.user = decoded;
 					next();
 			} catch (error) {
