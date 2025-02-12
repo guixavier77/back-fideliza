@@ -31,7 +31,7 @@ class UsersService {
                 password,
             }
         })
-
+        delete user.password;
         return user;
     }
 
@@ -90,8 +90,7 @@ class UsersService {
         const userExists = await UsersDB.findFirst({where: {email: email}})
 
         if(!userExists && !userExists.active) throw new Error('User not found');
-
-        if(!comparePassword(password, userExists.password)) throw new Error('Password invalid');
+        if(!await comparePassword(password, userExists.password)) throw new Error('Password invalid');
 
         const payload = {
             id: userExists.id,
