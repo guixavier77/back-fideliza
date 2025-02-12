@@ -100,6 +100,7 @@ class UsersService {
             storeId: userExists.storeId,
             active: userExists.active,
             cpf: userExists.cpf
+            
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET,{
