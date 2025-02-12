@@ -12,5 +12,5 @@ usersRouter.put('/users', validateAuth([ROLE.ADMIN, ROLE.SUPERADMIN]), usersCont
 usersRouter.post('/authUsers', usersController.auth);
 usersRouter.post('/refreshToken', usersController.refreshToken);
 
-
+ 
 export default usersRouter
