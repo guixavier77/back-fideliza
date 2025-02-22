@@ -99,7 +99,9 @@ class UsersService {
             role: userExists.role,
             storeId: userExists.storeId,
             active: userExists.active,
-            cpf: userExists.cpf
+            cpf: userExists.cpf,
+            phone: userExists.phone,
+            birthDate: userExists.birthDate
             
         }
 
@@ -133,7 +135,9 @@ class UsersService {
                 role: user.role,
                 storeId: user.storeId,
                 active: user.active,
-                cpf: user.cpf
+                cpf: user.cpf,
+                phone: user.phone,
+                birthDate: user.birthDate
             };
 
             const refreshToken = jwt.sign(newPayload, process.env.JWT_SECRET, {

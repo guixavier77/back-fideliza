@@ -9,8 +9,10 @@ const launcherPointsService = new LauncherPointsService();
 export default class LauncherPointsController {
 
     async launcherByCpf(req: Request, res: Response): Promise<void> {
+        const user = (req as any).user;
+
         try {
-            await launcherPointsService.sendPointsPerCpf(req.body);
+            await launcherPointsService.sendPointsPerCpf(req.body, user.id);
             res.status(200).send({ msg: 'Launcher points successfully' });
         } catch (error) {
             res.status(500).send({ msg: error instanceof Error ? error.message : 'Unknown error' });
