@@ -109,6 +109,7 @@ class UsersService {
             expiresIn: '30d'
         })
 
+        
         return {token, user: payload};
     }
 
