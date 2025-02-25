@@ -9,6 +9,7 @@ class UsersService {
 
     async createUser(userCreate: UserCreate): Promise<any> { 
         const {users: UsersDB} = this.prisma;
+        console.log('DEPLOY');
         const validate = validateUser(userCreate)
         if(validate.error) throw new Error(validate.error.details[0].message);
         const userExists = await UsersDB.findFirst({
@@ -109,7 +110,7 @@ class UsersService {
             expiresIn: '30d'
         })
 
-        
+
 
         return {token, user: payload};
     }
