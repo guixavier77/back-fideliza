@@ -7,8 +7,8 @@ const launcherPointsRouter = Router();
 
 const launcherPointsController = new LauncherPointsController();
 
-launcherPointsRouter.post('/launcherPoints/cpf', validateAuth([ROLE.OPERATOR, ROLE.CUSTOMER]), launcherPointsController.launcherByCpf);
-launcherPointsRouter.get('/launcherPoints/generateQrCode/:promotionId', validateAuth([ROLE.OPERATOR]), launcherPointsController.generateQrCocde);
+launcherPointsRouter.post('/launcherPoints/cpf', validateAuth([ROLE.OPERATOR, ROLE.ADMIN]), launcherPointsController.launcherByCpf);
+launcherPointsRouter.get('/launcherPoints/generateQrCode/:promotionId', validateAuth([ROLE.OPERATOR, ROLE.ADMIN]), launcherPointsController.generateQrCocde);
 launcherPointsRouter.post('/launcherPoints/qrCode/:qrCode', validateAuth([ROLE.CUSTOMER]), launcherPointsController.launcherByQrCode);
 
 

@@ -3,6 +3,7 @@ import { validateUser, validateUserUpdate } from "../../validators/users-validat
 import { UserAuth, UserCreate, UserUpdate } from "../models/users";
 import {  comparePassword, generatePassword } from "../../utils/password";
 import jwt, { decode } from 'jsonwebtoken'
+import { ROLE } from "../../utils/roles";
 
 class UsersService {
     private prisma = new PrismaClient();
@@ -31,13 +32,21 @@ class UsersService {
                 password,
             }
         })
-
+        delete user.password;
         return user;
     }
 
-    async getAll(): Promise<any> { 
+    async getAll(role: string): Promise<any> { 
         const {users: UsersDB} = this.prisma;
+
+        const whereCondition =
+            role === ROLE.SUPERADMIN
+                ? { NOT: { role: ROLE.CUSTOMER } }
+                : role === ROLE.ADMIN
+                ? { role: ROLE.OPERATOR }
+                : {};
         const users = await UsersDB.findMany({
+            where: whereCondition,
             select: {
                 id: true,
                 cpf: true,
@@ -59,7 +68,6 @@ class UsersService {
 
     async update(userUpdate: UserUpdate): Promise<any> { 
         const {users: UsersDB} = this.prisma;
-        console.log(userUpdate);
         const validate = validateUserUpdate(userUpdate)
         if(validate.error) throw new Error(validate.error.details[0].message);
 
@@ -90,8 +98,7 @@ class UsersService {
         const userExists = await UsersDB.findFirst({where: {email: email}})
 
         if(!userExists && !userExists.active) throw new Error('User not found');
-
-        if(!comparePassword(password, userExists.password)) throw new Error('Password invalid');
+        if(!await comparePassword(password, userExists.password)) throw new Error('Password invalid');
 
         const payload = {
             id: userExists.id,
@@ -99,12 +106,18 @@ class UsersService {
             name: userExists.name,
             role: userExists.role,
             storeId: userExists.storeId,
-            active: userExists.active
+            active: userExists.active,
+            cpf: userExists.cpf,
+            phone: userExists.phone,
+            birthDate: userExists.birthDate
+            
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET,{
             expiresIn: '30d'
         })
+
+
 
         return {token, user: payload};
     }
@@ -131,7 +144,10 @@ class UsersService {
                 name: user.name,
                 role: user.role,
                 storeId: user.storeId,
-                active: user.active
+                active: user.active,
+                cpf: user.cpf,
+                phone: user.phone,
+                birthDate: user.birthDate
             };
 
             const refreshToken = jwt.sign(newPayload, process.env.JWT_SECRET, {

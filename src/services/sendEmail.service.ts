@@ -1,8 +1,5 @@
 
-import { PrismaClient } from "@prisma/client";
 import { createTransport, SentMessageInfo, Transporter } from 'nodemailer';
-import { validateStore } from "../../validators/stores-validator";
-import { EmailConfirmRegister } from "../models/email";
 
 
 class SendEmailService {

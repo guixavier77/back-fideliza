@@ -11,18 +11,18 @@ const prisma = new PrismaClient();
 
 class LauncherPointsService {
 
-    async sendPointsPerCpf(launcher: LauncherPoints): Promise<any> { 
+    async sendPointsPerCpf(launcher: LauncherPoints, operatorId: number): Promise<any> { 
         const validate = validateLauncherByCpf(launcher);
         if (validate.error) throw new Error(validate.error.details[0].message);
         const {promotionId, cpf} = validate.value;
-        await this.processPoints(promotionId,cpf);
+        await this.processPoints(promotionId,cpf, operatorId);
     }
 
     async sendPointsPerCode(qrCodeId: number, cpf: string): Promise<any> { 
         const {qr_code: qrCodeDB} = prisma;
         const qrCode = await qrCodeDB.findUnique({ where: { id: qrCodeId}});  
-        if(!qrCode && qrCode.read) throw new Error('User not found');
-        await this.processPoints(qrCode.promotionId ,cpf);  
+        if(!qrCode && qrCode.read) throw new Error('QrCode not found');
+        await this.processPoints(qrCode.promotionId ,cpf, qrCode.userId);  
         await this.validateQRCode(qrCode.id);
 
     }
@@ -45,7 +45,8 @@ class LauncherPointsService {
         const qrCode = await qrCodeDB.create({
             data: {
                 promotionId,
-                userId,            },
+                userId,            
+            },
         });
     
         return qrCode;
@@ -65,8 +66,8 @@ class LauncherPointsService {
     }
 
 
-    private async processPoints(promotionId: number, cpf: string): Promise<any>{
-        const {promotions: promotionsDB, users: usersDB, promotions_users_point: promotionsUsersPointsDB, promotion_winners: promotionsWinnersDB} = prisma;
+    private async processPoints(promotionId: number, cpf: string, operatorId: number | null): Promise<any>{
+        const {promotions: promotionsDB, users: usersDB, promotions_users_point: promotionsUsersPointsDB, promotion_winners: promotionsWinnersDB, promotions_users_history: promotionsUsersHistoryDB} = prisma;
 
         const user = await usersDB.findUnique({ where: {cpf: cpf }})
         if(!user) throw new Error('User not found');    
@@ -81,8 +82,7 @@ class LauncherPointsService {
         });
 
         if(userInPromotionExists && userInPromotionExists.points === userInPromotionExists.maxPoints) throw new Error('The user has already completed this promotion.')
-        const pointsToClient = (userInPromotionExists?.points ?? 0) + promotion.pointsPerPurchase > promotion.points ? promotion.points : userInPromotionExists.points + promotion.pointsPerPurchase
-
+        const pointsToClient = (userInPromotionExists?.points ?? 0) + promotion.pointsPerPurchase > promotion.points ? promotion.points : (userInPromotionExists?.points ?? 0) + promotion.pointsPerPurchase
         if(userInPromotionExists){
             await promotionsUsersPointsDB.update({
                 where: { id: userInPromotionExists.id },
@@ -108,6 +108,14 @@ class LauncherPointsService {
                 }
             })
         }
+
+        await promotionsUsersHistoryDB.create({
+            data: {
+                userId: user.id,
+                promotionId, 
+                operatorId
+            }
+        })
     }
 
 
