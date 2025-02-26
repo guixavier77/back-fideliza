@@ -22,7 +22,7 @@ class LauncherPointsService {
         const {qr_code: qrCodeDB} = prisma;
         const qrCode = await qrCodeDB.findUnique({ where: { id: qrCodeId}});  
         if(!qrCode && qrCode.read) throw new Error('QrCode not found');
-        await this.processPoints(qrCode.promotionId ,cpf, null);  
+        await this.processPoints(qrCode.promotionId ,cpf, qrCode.userId);  
         await this.validateQRCode(qrCode.id);
 
     }
@@ -81,11 +81,8 @@ class LauncherPointsService {
             },
         });
 
-        console.log(promotion);
         if(userInPromotionExists && userInPromotionExists.points === userInPromotionExists.maxPoints) throw new Error('The user has already completed this promotion.')
         const pointsToClient = (userInPromotionExists?.points ?? 0) + promotion.pointsPerPurchase > promotion.points ? promotion.points : (userInPromotionExists?.points ?? 0) + promotion.pointsPerPurchase
-
-        console.log('caiu aqui')
         if(userInPromotionExists){
             await promotionsUsersPointsDB.update({
                 where: { id: userInPromotionExists.id },

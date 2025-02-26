@@ -30,7 +30,7 @@ class PromotionsService {
 
     async getAllByStore(storeId: number): Promise<any> { 
         const {promotions: PromotionDB} = prisma;
-        const promotions = await PromotionDB.findMany({where: {storeId: storeId}})
+        const promotions = await PromotionDB.findMany({where: {storeId: storeId, active: true}})
         return promotions;
     }
 
