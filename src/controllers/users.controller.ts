@@ -27,8 +27,9 @@ export default class UsersController {
     }
 
     async getAll(req: Request, res: Response): Promise<void> {
+        const user = (req as any).user;
         try {
-            const users = await usersService.getAll();
+            const users = await usersService.getAll(user.role);
             res.status(200).send({ msg: 'Get users successfull', users });
         } catch (error) {
             res.status(500).send({msg: error instanceof Error ? error.message : 'Unknown error' });

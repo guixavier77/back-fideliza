@@ -3,6 +3,7 @@ import { validateUser, validateUserUpdate } from "../../validators/users-validat
 import { UserAuth, UserCreate, UserUpdate } from "../models/users";
 import {  comparePassword, generatePassword } from "../../utils/password";
 import jwt, { decode } from 'jsonwebtoken'
+import { ROLE } from "../../utils/roles";
 
 class UsersService {
     private prisma = new PrismaClient();
@@ -35,9 +36,17 @@ class UsersService {
         return user;
     }
 
-    async getAll(): Promise<any> { 
+    async getAll(role: string): Promise<any> { 
         const {users: UsersDB} = this.prisma;
+
+        const whereCondition =
+            role === ROLE.SUPERADMIN
+                ? { NOT: { role: ROLE.CUSTOMER } }
+                : role === ROLE.ADMIN
+                ? { role: ROLE.OPERATOR }
+                : {};
         const users = await UsersDB.findMany({
+            where: whereCondition,
             select: {
                 id: true,
                 cpf: true,

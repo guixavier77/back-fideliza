@@ -1,5 +1,5 @@
 MAIN=src/server.ts
-MEMORY=512
+MEMORY=2048
 VERSION=recommended
 DISPLAY_NAME=back-fideliza
 DESCRIPTION=Back
