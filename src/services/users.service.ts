@@ -4,6 +4,8 @@ import { UserAuth, UserCreate, UserUpdate } from "../models/users";
 import {  comparePassword, generatePassword } from "../../utils/password";
 import jwt, { decode } from 'jsonwebtoken'
 import { ROLE } from "../../utils/roles";
+import SendEmailService from "./sendEmail.service";
+const sendEmailService = new SendEmailService();
 
 class UsersService {
     private prisma = new PrismaClient();
@@ -160,6 +162,45 @@ class UsersService {
             throw new Error('Invalid refresh token');
         }
     }
+
+    async sendEmailResetPassword(email: string): Promise<any> {
+        const { users: UsersDB, reset_password_token: resetPasswordTokenDB } = this.prisma;
+        try {
+        
+            const user = await UsersDB.findUnique({
+                where: {email}
+            })
+            if(!user) throw new Error('User not found');
+
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+
+            const link = `${process.env.FRONTEND_URL}resetPassword?token=${token}`
+
+
+            await sendEmailService.resetPassword(email, link);
+
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    async changePassword(password: string, userId: number): Promise<any> {
+        const { users: UsersDB } = this.prisma;
+        try {
+            const passwordCript = await generatePassword(password);
+    
+            const user = await UsersDB.update({
+                where: { id: userId },
+                data: { password: passwordCript }
+            });
+    
+            return user;
+        } catch (error) {
+            console.error("Erro ao alterar senha:", error);
+            throw new Error(error instanceof Error ? error.message : "Erro desconhecido ao alterar senha");
+        }
+    }
+    
 
 }
 

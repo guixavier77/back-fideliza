@@ -45,13 +45,13 @@ model users {
     created_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
     updated_at DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
-    stores                   stores?                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    rewards                  rewards[]
-    users_history            users_history[]
-    promotions_users_point   promotions_users_point[]
+    stores                            stores?                    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    rewards                           rewards[]
+    users_history                     users_history[]
+    promotions_users_point            promotions_users_point[]
     promotions_users_history_user     promotions_users_history[] @relation("UserHistory")
     promotions_users_history_operator promotions_users_history[] @relation("OperatorHistory")
-    promotion_winners        promotion_winners[]
+    promotion_winners                 promotion_winners[]
 }
 
 model users_history {
@@ -133,15 +133,15 @@ model promotions_users_point {
 }
 
 model promotions_users_history {
-    id          Int        @id @default(autoincrement())
+    id          Int       @id @default(autoincrement())
     userId      Int
     operatorId  Int?
     promotionId Int
-    created_at  DateTime?  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    created_at  DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
-    user        users      @relation("UserHistory", fields: [userId], references: [id], onDelete: Cascade)
-    operator    users?     @relation("OperatorHistory", fields: [operatorId], references: [id], onDelete: Cascade)
-    promotions  promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+    user       users      @relation("UserHistory", fields: [userId], references: [id], onDelete: Cascade)
+    operator   users?     @relation("OperatorHistory", fields: [operatorId], references: [id], onDelete: Cascade)
+    promotions promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
 }
 
 model qr_code {
@@ -149,4 +149,9 @@ model qr_code {
     promotionId Int
     userId      Int?
     read        Boolean @default(false)
+}
+
+model reset_password_token {
+    id    Int    @id @default(autoincrement())
+    token String @db.Text
 }

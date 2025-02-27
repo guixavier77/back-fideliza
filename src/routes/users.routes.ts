@@ -14,4 +14,8 @@ usersRouter.post('/authUsers', usersController.auth);
 usersRouter.post('/refreshToken', usersController.refreshToken);
 
 
+usersRouter.post('/users/sendEmailResetPassword/:email', usersController.sendEmailResetPassword);
+usersRouter.post('/users/changePassword/:password', usersController.changePassword);
+
+
 export default usersRouter
