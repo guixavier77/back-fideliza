@@ -193,7 +193,9 @@ class UsersService {
                 where: { id: userId },
                 data: { password: passwordCript }
             });
-    
+            
+
+            await sendEmailService.confirmPasswordChange(user.email);
             return user;
         } catch (error) {
             console.error("Erro ao alterar senha:", error);
