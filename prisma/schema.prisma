@@ -120,14 +120,15 @@ model promotion_winners {
 }
 
 model promotions_users_point {
-    id          Int        @id @default(autoincrement())
-    userId      Int
-    promotionId Int
-    points      Int
-    maxPoints   Int
-    created_at  DateTime?  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
-    users       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    promotions  promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+    id                Int        @id @default(autoincrement())
+    userId            Int
+    promotionId       Int
+    points            Int
+    maxPoints         Int
+    deliveryRequested Boolean?   @default(false)
+    created_at        DateTime?  @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
+    users             users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    promotions        promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
 
     @@unique([userId, promotionId])
 }

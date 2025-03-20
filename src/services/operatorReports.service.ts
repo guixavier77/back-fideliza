@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 
 class OperatorsReportsService {
-
-
     async historyLauncherPoints(userId: number) {
       const {promotions_users_history: promotionsUsersHistoryDB } = prisma;
       const data = await promotionsUsersHistoryDB.findMany({

@@ -60,6 +60,39 @@ class CustomerReportsService {
       }));
 
     }
+
+    async getClientsByStore(storeId: number){
+      const {promotions_users_point: promotionsUsersPointDB } = prisma;
+
+      const data = await promotionsUsersPointDB.findMany({
+        where: {
+          promotions: {
+              storeId: storeId
+          }
+        }, 
+        distinct: ['userId'],
+        select: {
+          userId: true,
+          users: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              cpf: true,
+              phone: true,
+              active: true,
+              role: true,
+              birthDate: true,
+            }
+          }
+        }
+
+      })
+
+
+      return data;
+
+    }
     
 
 }
