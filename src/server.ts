@@ -6,6 +6,7 @@ import awardsRouter from './routes/awards.routes';
 import promotionsRouter from './routes/promotions.routes';
 import launcherPointsRouter from './routes/launcherPoints.routes';
 import reportsRouter from './routes/reports.routes';
+import dashBoardRouter from './routes/dashboard.routes';
 const app = express();
 const host = process.env.HOST || 'localhost';
 const port = process.env.NODE_PORT || '3333'
@@ -18,5 +19,6 @@ app.use(awardsRouter)
 app.use(promotionsRouter)
 app.use(launcherPointsRouter)
 app.use(reportsRouter)
+app.use(dashBoardRouter);
 
 app.listen(parseInt(port), host, () => console.log(`🚀 back fideliza listening on port ${port}.`))

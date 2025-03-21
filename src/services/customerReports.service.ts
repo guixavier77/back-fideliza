@@ -72,7 +72,6 @@ class CustomerReportsService {
         }, 
         distinct: ['userId'],
         select: {
-          userId: true,
           users: {
             select: {
               id: true,
@@ -90,7 +89,7 @@ class CustomerReportsService {
       })
 
 
-      return data;
+      return data.map(d => d.users);
 
     }
     
