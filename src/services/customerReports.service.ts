@@ -20,18 +20,25 @@ class CustomerReportsService {
                 select: {
                   name: true
                 }
-              }
+              },
+              request_award: true
             }
           },
         }
       })
 
+
+      console.log(data);
+  
       return data.map((history) => ({
         points: history.points,
         maxPoints: history.maxPoints,
         promotionName: history.promotions.name,
         active: history.promotions.active,
         storeName: history.promotions.stores.name,
+        canRescue: history.points === history.maxPoints,
+        promotionId: history.promotionId,
+        requestAward: history.promotions.request_award.length > 0
       }));
     }
 

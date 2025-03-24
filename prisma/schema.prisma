@@ -52,6 +52,7 @@ model users {
     promotions_users_history_user     promotions_users_history[] @relation("UserHistory")
     promotions_users_history_operator promotions_users_history[] @relation("OperatorHistory")
     promotion_winners                 promotion_winners[]
+    request_award                     request_award[]
 }
 
 model users_history {
@@ -106,6 +107,7 @@ model promotions {
     promotions_users_point   promotions_users_point[]
     promotion_winners        promotion_winners[]
     promotions_users_history promotions_users_history[]
+    request_award            request_award[]
 }
 
 model promotion_winners {
@@ -141,8 +143,8 @@ model promotions_users_history {
     created_at  DateTime? @default(dbgenerated("CURRENT_TIMESTAMP(6)")) @db.Timestamp(6)
 
     user       users      @relation("UserHistory", fields: [userId], references: [id], onDelete: Cascade)
-    operator   users?     @relation("OperatorHistory", fields: [operatorId], references: [id], onDelete: Cascade)
     promotions promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+    operator   users?     @relation("OperatorHistory", fields: [operatorId], references: [id], onDelete: Cascade)
 }
 
 model qr_code {
@@ -150,6 +152,18 @@ model qr_code {
     promotionId Int
     userId      Int?
     read        Boolean @default(false)
+}
+
+model request_award {
+    id          Int     @id @default(autoincrement())
+    promotionId Int
+    userId      Int
+    rescued     Boolean @default(false)
+
+    user       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    promotions promotions @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+    @@unique([promotionId, userId])
 }
 
 model reset_password_token {
